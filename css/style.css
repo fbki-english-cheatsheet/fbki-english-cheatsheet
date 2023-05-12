@@ -62,10 +62,6 @@ h1, h2, h3, h4, h5, h6 {
 	margin: .5rem 0rem;
 }
 
-p {
-	white-space: pre-wrap;
-}
-
 /* ==================== */
 /* Навигационная панель */
 /* ==================== */
@@ -334,4 +330,8 @@ p {
 	.two-panel > .article {
 		display: grid;
 	}
+}
+
+.markdown > * {
+	white-space: pre-wrap;
 }

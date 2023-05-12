@@ -45,6 +45,7 @@ async function display_article(id) {
 
 	title.innerHTML = post.title
 	content.innerHTML = marked.parse(post.content)
+	content.classList.add("markdown")
 
 	article.append(title, content)
 
@@ -74,6 +75,7 @@ async function display_editor(id) {
 	textarea.value = post.content
 	title.innerHTML = post.title
 	content.innerHTML = marked.parse(post.content)
+	content.classList.add("markdown")
 
 	preview.append(title, content)
 
@@ -132,7 +134,7 @@ function build_card(id, title, head) {
 	const card = document.createElement("div")
 	const html_head = marked.parse(head ?? "")
 
-	card.innerHTML = `<div><h1>${title}</h1><div>${html_head}</div></div><div class="fade"></div><icon big class="arrow">arrow_right_alt</icon>`
+	card.innerHTML = `<div><h1>${title}</h1><div class="markdown">${html_head}</div></div><div class="fade"></div><icon big class="arrow">arrow_right_alt</icon>`
 	card.onclick = function(event) {
 		display_article(id)
 	}
