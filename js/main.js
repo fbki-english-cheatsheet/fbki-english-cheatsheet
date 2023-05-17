@@ -1,5 +1,36 @@
 "use strict"
 
+// Конфигурация для Marked
+// Здесь включена опция breaks, которая включает вставку <br> заместо \n при переносах внутри абзаца и др.
+marked.setOptions({
+	"async": false,
+	"baseUrl": null,
+	"breaks": true,
+	"extensions": null,
+	"gfm": true,
+	"headerIds": true,
+	"headerPrefix": "",
+	"highlight": null,
+	"hooks": null,
+	"langPrefix": "language-",
+	"mangle": true,
+	"pedantic": false,
+	"sanitize": false,
+	"sanitizer": null,
+	"silent": false,
+	"smartypants": false,
+	"tokenizer": null,
+	"walkTokens": null,
+	"xhtml": false
+})
+
+// Marked всё равно будет вставлять \n в странные места, например после <ol>
+// Это плохо сочетается с white-space: pre-wrap
+// Здесь мы избавляемся от этих лишних \n
+function parse(x) {
+	return marked.parse(x).replace(/\n/g, "")
+}
+
 // Элементы с изменяемым содержимым/атрибутами
 const app = {
 	main: document.querySelector("main"),
@@ -44,7 +75,7 @@ async function display_article(id) {
 	const content = document.createElement("div")
 
 	title.innerHTML = post.title
-	content.innerHTML = marked.parse(post.content)
+	content.innerHTML = parse(post.content)
 	content.classList.add("markdown")
 
 	article.append(title, content)
@@ -74,7 +105,7 @@ async function display_editor(id) {
 	titlebox.value = post.title
 	textarea.value = post.content
 	title.innerHTML = post.title
-	content.innerHTML = marked.parse(post.content)
+	content.innerHTML = parse(post.content)
 	content.classList.add("markdown")
 
 	preview.append(title, content)
@@ -84,7 +115,7 @@ async function display_editor(id) {
 	}
 
 	textarea.oninput = function(event) {
-		content.innerHTML = marked.parse(textarea.value)
+		content.innerHTML = parse(textarea.value)
 	}
 
 	const save_fn = async function() {
@@ -132,7 +163,7 @@ async function display_loading_screen() {
 // Карточка для главной страницы
 function build_card(id, title, head) {
 	const card = document.createElement("div")
-	const html_head = marked.parse(head ?? "")
+	const html_head = parse(head ?? "")
 
 	card.innerHTML = `<div><h1>${title}</h1><div class="markdown">${html_head}</div></div><div class="fade"></div><icon big class="arrow">arrow_right_alt</icon>`
 	card.onclick = function(event) {
