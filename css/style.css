@@ -211,6 +211,48 @@ h1, h2, h3, h4, h5, h6 {
 	text-align: center;
 }
 
+/* ================== */
+/* Индикатор загрузки */
+/* ================== */
+
+.indeterminate-progress-bar {
+	background-color: #eee8d5;
+
+	border-radius: 10px;
+
+	height: 2px;
+	margin: 1rem;
+	width: 10rem;
+
+	position: relative;
+	overflow: hidden;
+}
+
+.indeterminate-progress-bar div {
+	background-color: #203a40;
+
+	border-radius: 10px;
+
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	width: 50%;
+
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	animation-timing-function: ease-in-out;
+	animation-name: indeterminate-progress-bar;
+}
+
+@keyframes indeterminate-progress-bar {
+	from {
+		left: -100%;
+	}
+	to {
+		left: 100%;
+	}
+}
+
 /* ======== */
 /* Редактор */
 /* ======== */
