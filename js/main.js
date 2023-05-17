@@ -37,7 +37,85 @@ const app = {
 	front: document.querySelector(".front"),
 	editor: document.querySelector(".editor"),
 	article: document.querySelector(".article"),
+	auth_menu: document.querySelector(".auth-menu"),
 	loading_screen: document.querySelector(".loading_screen")
+}
+
+const auth = {
+	username: "",
+	token: ""
+}
+
+async function perform_sign_in(form, username, password) {
+	const results = await sendRequest('login', { name: username, password: password })
+	
+	if (results.success == false) {
+		alert("Неверный логин или пароль")
+		return
+	} else {
+		auth.username = username
+		auth.token = results.token
+
+		display_sign_out_form()
+		display_front_page()
+	}
+}
+
+async function perform_sign_out() {
+	auth.username = ""
+	auth.token = ""
+}
+
+// Отобразить форму авторизации в меню авторизации
+async function display_sign_in_form() {
+	const form = document.createElement("form")
+
+	form.onsubmit = function(event) {
+		const username = form.username.value
+		const password = form.password.value
+
+		perform_sign_in(form, username, password)
+
+		return false
+	}
+
+	form.innerHTML = `
+	<div>
+		<div>Имя учетной записи:</div>
+		<input type="text" name="username">
+	</div>
+	<div>
+		<div>Пароль:</div>
+		<input type="password" name="password">
+	</div>
+	<div>
+		<input type="submit" value="Войти">
+	</div>`
+
+	app.auth_menu.replaceChildren(form)
+}
+
+async function display_sign_out_form() {
+	const form = document.createElement("form")
+
+	form.onsubmit = function(event) {
+		perform_sign_out()
+
+		display_sign_in_form()
+		display_front_page()
+
+		return false
+	}
+
+	form.innerHTML = `
+	<div>
+		Вы вошли как: ${auth.username}
+	</div>
+	<div>
+		<input type="submit" value="Выйти">
+	</div>`
+
+	app.auth_menu.replaceChildren(form)
 }
 
 // Отобразить главную страницу
@@ -55,7 +133,8 @@ async function display_front_page() {
 		app.front.append(card)
 	}
 
-	app.front.append(build_new_post_card())
+	if (auth.token)
+		app.front.append(build_new_post_card())
 
 	app.main.classList.remove("two-panel")
 	app.front.classList.remove("hide")
@@ -80,7 +159,11 @@ async function display_article(id) {
 
 	article.append(title, content)
 
-	app.article.replaceChildren(controls, article)
+	if (auth.token) {
+		app.article.replaceChildren(controls, article)
+	} else {
+		app.article.replaceChildren(article)
+	}
 
 	app.main.classList.remove("two-panel")
 	app.front.classList.add("hide")
@@ -272,25 +355,5 @@ function build_preview_hint_panel() {
 	return build_panel("Предпросмотр")
 }
 
+display_sign_in_form()
 display_front_page()
-
-// fetch("https://functions.yandexcloud.net/d4ekq68eemul40pdvpc9", {
-//   "headers": {
-//     "accept": "*/*",
-//     "accept-language": "ru,en;q=0.9",
-//     "content-type": "text/plain;charset=UTF-8",
-//     "sec-ch-ua": "\"Chromium\";v=\"110\", \"Not A(Brand\";v=\"24\", \"YaBrowser\";v=\"23\"",
-//     "sec-ch-ua-mobile": "?0",
-//     "sec-ch-ua-platform": "\"Windows\"",
-//     "sec-fetch-dest": "empty",
-//     "sec-fetch-mode": "cors",
-//     "sec-fetch-site": "cross-site"
-//   },
-//   "referrerPolicy": "strict-origin-when-cross-origin",
-//   "body": "{\"status\":\"ok\",\"cards\":[{\"count\":1,\"color\":2,\"shape\":3,\"fill\":2},{\"count\":2,\"color\":2,\"shape\":3,\"fill\":3},{\"count\":2,\"color\":3,\"shape\":2,\"fill\":3},{\"count\":1,\"color\":2,\"shape\":2,\"fill\":3},{\"count\":3,\"color\":2,\"shape\":2,\"fill\":2},{\"count\":3,\"color\":1,\"shape\":3,\"fill\":3},{\"count\":1,\"color\":1,\"shape\":2,\"fill\":3},{\"count\":2,\"color\":3,\"shape\":2,\"fill\":2},{\"count\":2,\"color\":1,\"shape\":1,\"fill\":1},{\"count\":2,\"color\":2,\"shape\":1,\"fill\":3},{\"count\":3,\"color\":3,\"shape\":1,\"fill\":1},{\"count\":2,\"color\":1,\"shape\":1,\"fill\":3}]}",
-//   "method": "POST",
-//   "mode": "cors",
-//   "credentials": "omit"
-// }).then(response => response.text())
-//   .then(result => console.log(result))
-//   .catch(error => console.log('error', error));

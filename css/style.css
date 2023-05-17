@@ -143,17 +143,9 @@ h1, h2, h3, h4, h5, h6 {
 	z-index: 10;
 }
 
-.auth-menu > div {
-	margin-bottom: 1rem;
-}
-
-.auth-menu > div:last-child {
-	margin-bottom: unset;
-}
-
-.auth-menu > div > button {
-	display: block;
-	margin-left: auto;
+.auth-menu form {
+	display: grid;
+	gap: 1rem;
 }
 
 /* =========================== */

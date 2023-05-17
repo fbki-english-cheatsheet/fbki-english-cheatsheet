@@ -3,7 +3,7 @@ async function sendRequest(action, params = {}) {
 
 	const requestOptions = {
 		method: 'POST',
-		body: JSON.stringify({ action, ...params, token: "12345token" }),
+		body: JSON.stringify({ action, ...params, token: auth.token }),
 	};
 
 	let response, obj;
