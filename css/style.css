@@ -182,7 +182,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .front > div {
 	background-color: #999;
-	padding: 0rem 1rem;
+	padding: .5rem 1rem;
 	overflow: hidden;
 	position: relative;
 	cursor: pointer;
