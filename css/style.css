@@ -81,6 +81,7 @@ h1, h2, h3, h4, h5, h6 {
 	place-self: center start;
 	font-size: 20px;
 	cursor: pointer;
+	padding: 4px;
 }
 
 .button-strip {
