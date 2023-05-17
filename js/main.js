@@ -330,7 +330,7 @@ function build_post_control_panel(post) {
 	edit.innerHTML = `<icon>edit</icon><span>Редактировать</span>`
 	del.innerHTML = `<icon>delete</icon><span>Удалить</span>`
 
-	return build_panel("Управление", [hide, edit, del])
+	return build_panel("Управление", [edit, del])
 }
 
 // Панель с кнопками отмены + сохранения
