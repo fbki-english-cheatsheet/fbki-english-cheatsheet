@@ -213,10 +213,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .add-card > div {
 	width: 5rem;
-	margin: 4rem auto 0rem;
 	text-align: center;
 }
 
+.add-card{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
 /* ================== */
 /* Индикатор загрузки */
 /* ================== */
